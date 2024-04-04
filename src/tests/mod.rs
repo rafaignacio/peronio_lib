@@ -1,9 +1,3 @@
-
 #[cfg(test)]
-use super::*;
+mod character_name_tests;
 
-#[test]
-fn it_works() {
-    let result = add(2, 2);
-    assert_eq!(result, 4);
-}
