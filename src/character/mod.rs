@@ -1,4 +1,4 @@
-mod character_name;
+pub mod character_name;
 
 pub struct Character {
     id: String
