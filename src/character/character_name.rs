@@ -1,21 +1,13 @@
-#[derive(Debug, PartialEq)]
-pub enum CharacterNameServiceErrors {
-    NameAlreadyExists,
-}
+use super::{CharacterErrors, CharacterService};
 
-pub trait CharacterNameService {
-    fn name_exists(&self, name: &str) -> Result<bool, CharacterNameServiceErrors>;
-    fn lock_name(&self, name: &str) -> Result<(), CharacterNameServiceErrors>;
-}
-
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
 pub struct CharacterName(String);
 
 impl CharacterName {
     pub fn new(
         name: &str,
-        service: &impl CharacterNameService,
-    ) -> Result<CharacterName, CharacterNameServiceErrors> {
+        service: &impl CharacterService,
+    ) -> Result<CharacterName, CharacterErrors> {
         if let Ok(false) = service.name_exists(name) {
             service.lock_name(name)?;
 
@@ -23,6 +15,6 @@ impl CharacterName {
         }
 
         eprintln!("Name {name} already exists on database.");
-        Err(CharacterNameServiceErrors::NameAlreadyExists)
+        Err(CharacterErrors::NameAlreadyExists)
     }
 }

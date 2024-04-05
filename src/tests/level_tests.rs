@@ -6,7 +6,7 @@ fn should_convert_level_properly() {
     println!("{level}");
     assert_eq!(1, level.get_current_level());
 
-    level = Level::from(101);
+    level = Level::from(100);
     println!("{level}");
     assert_eq!(2, level.get_current_level());
 

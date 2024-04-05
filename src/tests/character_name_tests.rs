@@ -1,8 +1,8 @@
-use crate::character::character_name::*;
+use crate::character::{character_name::*, CharacterErrors, CharacterService};
 
 #[test]
 fn should_create_char_name() {
-    let service = MockedCharNameService {
+    let service = MockedCharService {
         name_should_exist: false,
     };
     match CharacterName::new("Rafael", &service) {
@@ -13,25 +13,25 @@ fn should_create_char_name() {
 
 #[test]
 fn should_fail_when_creating_char_name() {
-    let service = MockedCharNameService {
+    let service = MockedCharService {
         name_should_exist: true,
     };
     match CharacterName::new("Rafael", &service) {
-        Err(CharacterNameServiceErrors::NameAlreadyExists) => (),
+        Err(CharacterErrors::NameAlreadyExists) => (),
         _ => panic!("failed"),
     }
 }
 
-struct MockedCharNameService {
+struct MockedCharService {
     name_should_exist: bool,
 }
 
-impl CharacterNameService for MockedCharNameService {
-    fn name_exists(&self, _name: &str) -> Result<bool, CharacterNameServiceErrors> {
+impl CharacterService for MockedCharService {
+    fn name_exists(&self, _name: &str) -> Result<bool, CharacterErrors> {
         Ok(self.name_should_exist)
     }
 
-    fn lock_name(&self, _name: &str) -> Result<(), CharacterNameServiceErrors> {
+    fn lock_name(&self, _name: &str) -> Result<(), CharacterErrors> {
         Ok(())
     }
 }

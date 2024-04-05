@@ -17,6 +17,16 @@ impl Display for Level {
     }
 }
 
+impl Default for Level {
+    fn default() -> Self {
+        Level {
+            inner: u64::default(),
+            xp_points: u128::default(),
+            next_level_threshold: u128::default(),
+        }
+    }
+}
+
 impl Level {
     pub fn get_current_level(&self) -> u64 {
         self.inner
@@ -29,7 +39,7 @@ impl Level {
     pub fn from(xp: u128) -> Level {
         let mut level = 1_u64;
 
-        while xp > get_next_level_threshold(level) {
+        while xp >= get_next_level_threshold(level) {
             level += 1;
         }
 
