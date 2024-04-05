@@ -27,7 +27,12 @@ impl Level {
     }
 
     pub fn from(xp: u128) -> Level {
-        let level = f64::floor(f64::sqrt(68_f64 * xp as f64) / 200_f64) as u64;
+        let mut level = 1_u64;
+
+        while xp > get_next_level_threshold(level) {
+            level += 1;
+        }
+
         Level {
             inner: level,
             xp_points: xp,
