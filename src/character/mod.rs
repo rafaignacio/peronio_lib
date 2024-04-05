@@ -1,3 +1,5 @@
+use std::borrow::Borrow;
+
 use self::{character_name::CharacterName, level::Level};
 
 pub mod character_name;
@@ -9,24 +11,40 @@ pub enum CharacterErrors {
 }
 
 pub trait CharacterService {
-    fn name_exists(&self, name: &str) -> Result<bool, CharacterErrors>;
+    fn check_name_existance(&self, name: &str) -> Result<bool, CharacterErrors>;
     fn lock_name(&self, name: &str) -> Result<(), CharacterErrors>;
 }
 
-pub struct Character {
+pub struct Character<'a> {
     id: String,
     name: CharacterName,
     level: Level,
-    service: Box<dyn CharacterService>,
+    service: &'a dyn CharacterService,
 }
 
-impl Character {
-    pub fn new(service: impl CharacterService + 'static) -> Result<Character, CharacterErrors> {
+impl Character<'_> {
+    pub fn new(service: &dyn CharacterService) -> Result<Character, CharacterErrors> {
         Ok(Character {
-            service: Box::new(service),
+            service,
             level: Level::default(),
             id: String::default(),
             name: CharacterName::default(),
         })
+    }
+
+    pub fn create<'a>(&mut self, name: &str) -> Result<(), CharacterErrors> {
+        self.id = String::from("");
+        self.name = CharacterName::new(name, self.service)?;
+        self.level = Level::from(0);
+
+        Ok(())
+    }
+
+    pub fn get_id(self) -> String {
+        self.id
+    }
+
+    pub fn get_level(&self) -> u64 {
+        self.level.get_current_level()
     }
 }

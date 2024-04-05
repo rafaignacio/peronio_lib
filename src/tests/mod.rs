@@ -10,7 +10,7 @@ struct MockedCharService {
 }
 
 impl CharacterService for MockedCharService {
-    fn name_exists(&self, _name: &str) -> Result<bool, CharacterErrors> {
+    fn check_name_existance(&self, _name: &str) -> Result<bool, CharacterErrors> {
         Ok(self.name_should_exist)
     }
 

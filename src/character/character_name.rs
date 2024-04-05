@@ -6,9 +6,9 @@ pub struct CharacterName(String);
 impl CharacterName {
     pub fn new(
         name: &str,
-        service: &impl CharacterService,
+        service: &dyn CharacterService,
     ) -> Result<CharacterName, CharacterErrors> {
-        if let Ok(false) = service.name_exists(name) {
+        if let Ok(false) = service.check_name_existance(name) {
             service.lock_name(name)?;
 
             return Ok(CharacterName(name.to_string()));
