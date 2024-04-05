@@ -4,10 +4,8 @@ pub enum CharacterNameServiceErrors {
 }
 
 pub trait CharacterNameService {
-    fn name_exists(&self, name: &str) ->
-        Result<bool, CharacterNameServiceErrors>;
-    fn lock_name(&self, name: &str) ->
-        Result<(), CharacterNameServiceErrors>;
+    fn name_exists(&self, name: &str) -> Result<bool, CharacterNameServiceErrors>;
+    fn lock_name(&self, name: &str) -> Result<(), CharacterNameServiceErrors>;
 }
 
 #[derive(Debug, PartialEq)]
@@ -24,6 +22,7 @@ impl CharacterName {
             return Ok(CharacterName(name.to_string()));
         }
 
+        eprintln!("Name {name} already exists on database.");
         Err(CharacterNameServiceErrors::NameAlreadyExists)
     }
 }

@@ -1,6 +1,4 @@
-use crate::character::*;
-
-use self::character_name::{CharacterName, CharacterNameService, CharacterNameServiceErrors};
+use crate::character::character_name::*;
 
 #[test]
 fn should_create_char_name() {
@@ -29,11 +27,11 @@ struct MockedCharNameService {
 }
 
 impl CharacterNameService for MockedCharNameService {
-    fn name_exists(&self, name: &str) -> Result<bool, character_name::CharacterNameServiceErrors> {
+    fn name_exists(&self, _name: &str) -> Result<bool, CharacterNameServiceErrors> {
         Ok(self.name_should_exist)
     }
 
-    fn lock_name(&self, name: &str) -> Result<(), character_name::CharacterNameServiceErrors> {
+    fn lock_name(&self, _name: &str) -> Result<(), CharacterNameServiceErrors> {
         Ok(())
     }
 }
