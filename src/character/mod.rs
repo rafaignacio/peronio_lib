@@ -1,6 +1,5 @@
-use std::borrow::Borrow;
-
 use self::{character_name::CharacterName, level::Level};
+use uuid::Uuid;
 
 pub mod character_name;
 pub mod level;
@@ -32,8 +31,8 @@ impl Character<'_> {
         })
     }
 
-    pub fn create<'a>(&mut self, name: &str) -> Result<(), CharacterErrors> {
-        self.id = String::from("");
+    pub fn create(&mut self, name: &str) -> Result<(), CharacterErrors> {
+        self.id = Uuid::now_v7().simple().to_string();
         self.name = CharacterName::new(name, self.service)?;
         self.level = Level::from(0);
 
